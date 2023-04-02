@@ -1,0 +1,6 @@
+{
+    "require": {
+        "mikecao/flight": "^2.0",
+        "vlucas/phpdotenv": "^5.5"
+    }
+}
