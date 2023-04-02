@@ -1,0 +1,371 @@
+openapi: 3.0.0
+info:
+  title: Key-Value Store API
+  description: An API for managing key-value pairs owned by applications
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /test:
+    get:
+      summary: Test endpoint
+      description: |
+        This endpoint can be used to test if the server is responding to requests.
+      responses:
+        '200':
+          description: A successful response with a message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    post:
+      summary: Test endpoint
+      description: |
+        This endpoint can be used to test if the server is responding to requests.
+      responses:
+        '200':
+          description: A successful response with a message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /init:
+    post:
+      summary: Initialize the database tables
+      description: |
+        This endpoint can be used to create the necessary database tables for the key-value store API.
+      responses:
+        '200':
+          description: A successful response with a message.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /apps:
+    get:
+      summary: List all applications
+      description: |
+        This endpoint returns a list of all applications that have been created.
+      responses:
+        '200':
+          description: A successful response with a list of applications.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    enabled:
+                      type: boolean
+                    token:
+                      type: string
+    post:
+      summary: Create or update an application
+      description: |
+        This endpoint can be used to create a new application or update an existing one.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                enabled:
+                  type: boolean
+                token:
+                  type: string
+      responses:
+        '201':
+          description: A successful response indicating that a new application was created.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '200':
+          description: A successful response indicating that an existing application was updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /apps/{id}:
+    put:
+      summary: Update an app
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: The ID of the app to update
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Bearer token for app authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The new name for the app
+                enabled:
+                  type: boolean
+                  description: Whether the app is enabled
+                token:
+                  type: string
+                  description: The new token for the app
+              example:
+                name: My App
+                enabled: true
+                token: abc123
+      responses:
+        '200':
+          description: The updated app
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The ID of the app
+                  name:
+                    type: string
+                    description: The name of the app
+                  enabled:
+                    type: boolean
+                    description: Whether the app is enabled
+                  token:
+                    type: string
+                    description: The token for the app
+              example:
+                id: 1
+                name: My App
+                enabled: true
+                token: abc123
+        '400':
+          description: Invalid request body
+        '401':
+          description: Unauthorized
+        '404':
+          description: App not found
+        '500':
+          description: Internal server error
+  /keys:
+    get:
+      summary: List all keys owned by the app
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Bearer token for app authentication
+      responses:
+        '200':
+          description: List of key-value pairs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: The ID of the key-value pair
+                    app_id:
+                      type: integer
+                      description: The ID of the app that owns the key-value pair
+                    key_name:
+                      type: string
+                      description: The name of the key
+                    value:
+                      type: string
+                      description: The value of the key
+              example:
+                - id: 1
+                  app_id: 1
+                  key_name: greeting
+                  value: Hello, world!
+                - id: 2
+                  app_id: 1
+                  key_name: count
+                  value: 42
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+  /key/{key}:
+    get:
+      summary: Retrieve the value of a key
+      parameters:
+        - name: key
+          in: path
+          description: The key to retrieve the value of
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: query
+          description: The bearer token to authenticate the app
+          required: false
+          schema:
+            type: string
+        - name: default
+          in: query
+          description: The default value to return if the key is not found
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The value of the key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: string
+        '404':
+          description: The key was not found
+        '401':
+          description: The token is invalid or not provided
+        '500':
+          description: An internal server error occurred
+  /key/{action}:
+    post:
+      summary: Create or update a key-value pair
+      description: |
+        This endpoint allows you to create or update a key-value pair. The key-value pairs are stored in a MySQL database and owned by an "app".
+      parameters:
+        - in: path
+          name: action
+          required: true
+          description: The action to perform. Must be either store, increment, or decrement.
+          schema:
+            type: string
+        - in: header
+          name: Authorization
+          description: The app token. Use Bearer authentication.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                  description: The key name.
+                  example: clicks
+                value:
+                  type: string
+                  description: The value associated with the key.
+                  example: 42
+              required:
+                - key
+      responses:
+        '200':
+          description: The key-value pair was created or updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The ID of the key-value pair.
+                    example: 1
+                  app_id:
+                    type: integer
+                    description: The ID of the app that owns the key-value pair.
+                    example: 1
+                  key_name:
+                    type: string
+                    description: The name of the key.
+                    example: clicks
+                  value:
+                    type: string
+                    description: The value associated with the key.
+                    example: 42
+        '400':
+          description: The request body is missing a required parameter or contains invalid data.
+        '401':
+          description: Unauthorized. The app token is missing or invalid.
+        '500':
+          description: Internal server error.

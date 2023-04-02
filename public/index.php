@@ -79,7 +79,7 @@ Flight::route('GET|POST /test', function() {
     echo 'I received either a GET or a POST request.';
 });
 
-// Init
+// Init Database
 Flight::route('POST /init', function() {
     checkStaticBearerToken();
 

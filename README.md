@@ -15,30 +15,15 @@ Key names are unique per App.
 You can perform `list`, `get`, `store`, `increment`, and `decrement` operations on keys.
 
 ## Use Cases
-- TBD
+- You've built a wordpress plugin, and wish to store certain consuption data in such a way that i can't be deleted
 
 ## REST APIs
 APIs are divided in two parts. One to manage `apps` and second to manage `keys` associated to any given app.
-
-### Manage Apps
-- TBD
-
-### Manage Key-Value-Pairs (Keys)
-- TBD
+Documentation is available in [openapi.yml](opeapi.yml)
 
 ## Deployment Instructions
 - Copy `.env.example` to `.env`, and replace all environment variables
 
-### Deployment to cPanel
-- TBD
-
-### Deployment with Apache
-- TBD
-
-### Deployment using Docker
-- TBD
-
-### Deployment with Docker Compose
-- TBD
+... TBD ...
 
 Enjoy!
