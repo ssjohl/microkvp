@@ -4,9 +4,7 @@ A lightweight KVP implementation, you can attach to any persistent storage.
 
 Works with MySql or MariaDB, so you can host on cPanel or as containerised app.
 
-The application management is available entirely via simple REST APIs. There's no user-interface.
-
-Postman collection is TBD.
+There's no user-interface, application management is available entirely via simple REST APIs.
 
 ## Basic Concept
 Using the ADMIN_TOKEN, you can create an `App`. Each `App` will have a unique `APP_TOKEN`.
