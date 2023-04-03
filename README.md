@@ -19,7 +19,7 @@ You can perform `list`, `get`, `store`, `increment`, and `decrement` operations 
 
 ## REST APIs
 APIs are divided in two parts. One to manage `apps` and second to manage `keys` associated to any given app.
-Documentation is available in [openapi.yaml](opeapi.yaml)
+Documentation is available in [openapi.yaml](openapi.yaml)
 
 ## Deployment Instructions
 - Copy `.env.example` to `.env`, and replace all environment variables
